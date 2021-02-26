@@ -38,7 +38,7 @@ module Enumerable
     array
   end
 
-  # ay_all?
+  # my_all?
   def my_all?(param = nil)
     first_counter = 0
     second_counter = 0
@@ -58,6 +58,26 @@ module Enumerable
         second_counter == size
       end
     end
+  end
+
+  # my_any?
+  def my_any?(param = nil)
+    if block_given?
+      my_each { |i| return true if yield(i) }
+      return false
+    else
+      case param
+      when nil
+        my_each { |i| return true if i }
+      when Class
+        my_each { |i| return true if [i.class, i.class.superclass].include?(param) }
+      when Regexp
+        my_each { |i| return true if param.match(i) }
+      else
+        my_each { |i| return true if i == param }
+      end
+    end
+    false
   end
 end
 
