@@ -102,6 +102,27 @@ module Enumerable
     end
     initial_value
   end
+
+  # my_count
+  def my_count(param = nil)
+    counter = 0
+    if block_given?
+      my_each do |i|
+        if yield(i)
+          counter += 1
+        end
+      end
+      counter
+    else
+      case param
+      when nil
+        size
+      when Numeric
+        my_each { |i| counter +=1 if param == i }
+        counter
+      end
+    end
+  end
 end
 
 # rubocop: enable all metrics
