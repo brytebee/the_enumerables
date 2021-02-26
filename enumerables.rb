@@ -15,6 +15,17 @@ module Enumerable
     end
     self
   end
+
+  # my_each_with_index
+  def my_each_with_index
+    return to_enum(:my_each_with_index) unless block_given?
+
+    index = 0
+    my_each do |item|
+      yield(item, index)
+      index += 1
+  end
+  end
 end
 
 # rubocop: enable all metrics
