@@ -132,6 +132,34 @@ module Enumerable
     my_each { |i| array << param.call(i) } unless param.nil?
     array
   end
+
+  # my_inject
+  def my_inject(initial = nil, operator = nil)
+    raise LocalJumpError unless block_given? || operator || initial || my_all?(String)
+
+    if initial && operator
+      result = initial
+      my_each { |item| result = result.send(operator, item) }
+    elsif initial.is_a?(Symbol) || initial.is_a?(String)
+      result = first
+      range_arr = to_a
+      (1..size - 1).my_each { |item| result = result.send(initial.to_sym, range_arr[item]) }
+    elsif my_all?(String)
+      longest_word = ''
+      my_each { |item| longest_word = item if item.size > longest_word.size }
+      return longest_word
+    elsif block_given?
+      if initial
+        result = initial
+        my_each { |item| result = yield(result, item) }
+      else
+        result = first
+        range_arr = to_a
+        (1..size - 1).my_each { |item| result = yield(result, range_arr[item]) }
+      end
+    end
+    result
+  end
 end
 
 # rubocop: enable all metrics
