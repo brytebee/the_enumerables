@@ -123,6 +123,15 @@ module Enumerable
       end
     end
   end
+
+  # my_map
+  def my_map(param = nil)
+    return to_enum(:my_map) unless block_given?
+    array = []
+    my_each { |i| array << yield(i) if param.nil? }
+    my_each { |i| array << param.call(i) } unless param.nil?
+    array
+  end
 end
 
 # rubocop: enable all metrics
