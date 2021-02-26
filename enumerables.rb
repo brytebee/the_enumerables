@@ -24,7 +24,18 @@ module Enumerable
     my_each do |item|
       yield(item, index)
       index += 1
+    end
   end
+  
+  # my_select
+  def my_select
+    return to_enum(:my_select) unless block_given?
+
+    array = []
+    my_each do |i|
+      array << i if yield(i)
+    end
+    array
   end
 end
 
