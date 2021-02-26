@@ -79,6 +79,29 @@ module Enumerable
     end
     false
   end
+
+  # my_none?
+  def my_none?(param = nil)
+    initial_value = true
+    if block_given?
+      my_each do |i| 
+        initial_value = false if yield(i)
+      end
+      initial_value
+    else
+      case param
+      when nil
+        my_each { |i| return false unless i.nil? || !i }
+      when Regexp 
+        my_each { |i| return false if i =~ param }
+      when Class
+        my_each { |i| return false if i.is_a? param }
+      else 
+        my_each { |i| return false if i == param }
+      end
+    end
+    initial_value
+  end
 end
 
 # rubocop: enable all metrics
