@@ -40,24 +40,19 @@ module Enumerable
 
   # my_all?
   def my_all?(param = nil)
-    first_counter = 0
-    second_counter = 0
     if block_given?
-      my_each { |i| first_counter += 1 if yield(i) }
-      first_counter == size
+      to_a.my_each { |item| return false if yield(item) == false }
+      return true
+    elsif param.nil?
+      to_a.my_each { |item| return false if item.nil? || item == false }
+    elsif !param.nil? && (param.is_a? Class)
+      to_a.my_each { |item| return false unless [item.class, item.class.superclass].include?(param) }
+    elsif !param.nil? && param.instance_of?(Regexp)
+      to_a.my_each { |item| return false unless param.match(item) }
     else
-      case param
-      when nil
-        my_each { |i| return true unless i.nil? || !i }
-      when Regexp
-        my_each { |i| return true if i =~ param }
-      when Class
-        my_each { |i| return true if i.is_a? param }
-      else
-        my_each { |elem| second_counter += 1 if !elem.nil? == true }
-        second_counter == size
-      end
+      to_a.my_each { |item| return false if item != param }
     end
+    true
   end
 
   # my_any?
@@ -134,31 +129,17 @@ module Enumerable
   end
 
   # my_inject
-  def my_inject(initial = nil, operator = nil)
-    raise LocalJumpError unless block_given? || operator || initial || my_all?(String)
-
-    if initial && operator
-      result = initial
-      my_each { |item| result = result.send(operator, item) }
-    elsif initial.is_a?(Symbol) || initial.is_a?(String)
-      result = first
-      range_arr = to_a
-      (1..size - 1).my_each { |item| result = result.send(initial.to_sym, range_arr[item]) }
-    elsif my_all?(String)
-      longest_word = ''
-      my_each { |item| longest_word = item if item.size > longest_word.size }
-      return longest_word
-    elsif block_given?
-      if initial
-        result = initial
-        my_each { |item| result = yield(result, item) }
-      else
-        result = first
-        range_arr = to_a
-        (1..size - 1).my_each { |item| result = yield(result, range_arr[item]) }
-      end
+  def my_inject(initial = nil, sym = nil)
+    if (!initial.nil? && sym.nil?) && (initial.is_a?(Symbol) || initial.is_a?(String))
+      sym = initial
+      initial = nil
     end
-    result
+    if !block_given? && !sym.nil?
+      to_a.my_each { |item| initial = initial.nil? ? item : initial.send(sym, item) }
+    else
+      to_a.my_each { |item| initial = initial.nil? ? item : yield(initial, item) }
+    end
+    initial
   end
 end
 
@@ -207,7 +188,7 @@ p [1, 1, 1].my_all?(1) # => true
 false_block = proc { |n| n < 5 }
 p (1..5).my_all?(&false_block) # false
 p [1, 2.2, 3, 0.6].my_all? #=> True
-puts
+puts 
 
 # 5. my_any? (example test cases)
 puts 'my_any?'
@@ -273,7 +254,15 @@ p [1, 2, 3, 4].my_inject { |accum, elem| accum + elem } # => 10
 p [5, 1, 2].my_inject(:+) # => 8
 p [5, 1, 2].my_inject(:*) # => 10
 p (5..10).my_inject(2, :*) # should return 302400
-p(5..10).my_inject(4) { |prod, n| prod * n } # should return 604800
-p (5..10).my_inject
+(5..10).my_inject(4) { |prod, n| 
+p prod * n 
+} # should return 604800
+longest = %w{ cat sheep bear }.inject do |memo, word|
+  memo.length > word.length ? memo : word
+end
+puts longest
+(5..10).inject(1) { |product, n| 
+p product * n 
+} #=> 151200
 
 # rubocop: enable all metrics
