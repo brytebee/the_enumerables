@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Description/Explanation of the Enumerable module
 # containly mainly used methods.
 # rubocop:disable Metric/ModuleLength
@@ -38,7 +36,8 @@ module Enumerable
     array
   end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/CyclomaticComplexity
   # my_all?
   def my_all?(param = nil)
     if block_given?
@@ -140,7 +139,8 @@ module Enumerable
     initial
   end
 
-  # rubocop:enable Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/AbcSize, Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metric/ModuleLength
 end
 
