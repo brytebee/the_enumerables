@@ -11,7 +11,6 @@
 
 ## Live Demo
 
-<<<<<<< HEAD
 [Live Demo Link](https://repl.it/@BrightAtsighi/theenumerables)
 =======
 
