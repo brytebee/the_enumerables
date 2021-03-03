@@ -11,7 +11,7 @@
 
 ## Live Demo
 
-[Live Demo Link](https://repl.it/@BrightAtsighi/theenumerables#enumerable.rb)
+[Live Demo Link](https://repl.it/@BrightAtsighi/theenumerables)
 
 ## screenshot
 
