@@ -11,7 +11,11 @@
 
 ## Live Demo
 
+<<<<<<< HEAD
 [Live Demo Link](https://repl.it/@BrightAtsighi/theenumerables)
+=======
+[Live Demo Link](https://repl.it/@BrightAtsighi/theenumerables#enumerable-1.rb)
+>>>>>>> e7a73eaab65cd72b3a6c030ba299139da5283f6f
 
 ## screenshot
 
