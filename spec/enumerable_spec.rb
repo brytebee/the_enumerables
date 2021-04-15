@@ -1,7 +1,7 @@
 # spec/enumerable_spec.rb
-
 require './enumerables'
 
+# rubocop:disable Metrics/BlockLength
 describe Enumerable do
   let(:arr) { [1, 2, 3, 4, 5] }
   let(:arr_str) { %w[ant bear cat] }
@@ -248,7 +248,7 @@ describe Enumerable do
     end
 
     it 'when a block is given with an array of strings' do
-      expect(%w[he lo].my_map { |i| i + 'llo' }).to eq(%w[hello lollo])
+      expect(%w[he lo].my_map { |i| "#{i}llo" }).to eq(%w[hello lollo])
     end
 
     it 'when using a proc as a block' do
@@ -288,4 +288,5 @@ describe Enumerable do
       expect(strings.my_inject { |p, n| p + n }).to eq('catsheepbear')
     end
   end
+  # rubocop:enable Metrics/BlockLength
 end
