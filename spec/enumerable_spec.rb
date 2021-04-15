@@ -288,5 +288,11 @@ describe Enumerable do
       expect(strings.my_inject { |p, n| p + n }).to eq('catsheepbear')
     end
   end
+
+  describe '#multiply_els' do
+    it 'returns the product of all elements in an array' do
+      expect(multiply_els(arr)).to eql(120)
+    end
+  end
   # rubocop:enable Metrics/BlockLength
 end
